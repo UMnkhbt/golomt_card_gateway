@@ -107,12 +107,13 @@ def purchase_request():
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
   vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/", xmldata, "POST")
-  
+  print("SENT")
+  print(vpnresult)
   return tuple([
         {"start": ent.start_char, "end": ent.end_char, "label": ent.label_}
-        for ent in vpnresult.ents
+        for ent in vpnresult
     ])
-    
+
   return vpnresult #xmldata
   (
       response_status,
