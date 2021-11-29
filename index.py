@@ -216,7 +216,9 @@ def reversal_request():
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
   # send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, request_method):
-  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/", xmldata, "POST")
+  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://10.10.10.1/", xmldata, "POST")
+  print("https://10.10.10.1/")
+  print(vpnresult)
   return vpnresult #xmldata
   (
       response_status,
