@@ -106,8 +106,9 @@ def purchase_request():
   collection_name = dbname["purchase_input"]
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
-  # send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, request_method):
-  return xmldata
+  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/", xmldata, "POST")
+   
+  return vpnresult #xmldata
   (
       response_status,
       response,
@@ -209,7 +210,8 @@ def reversal_request():
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
   # send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, request_method):
-  return xmldata
+  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/", xmldata, "POST")
+  return vpnresult #xmldata
   (
       response_status,
       response,
@@ -314,8 +316,8 @@ def refund_request():
   collection_name = dbname["reversal_input"]
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
-  # send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, request_method):
-  return xmldata
+  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/", xmldata, "POST")
+  return vpnresult #xmldata
   (
       response_status,
       response,
