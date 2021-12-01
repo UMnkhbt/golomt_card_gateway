@@ -99,15 +99,18 @@ def purchase_request():
   xmldata = xmldata.replace('\n','')
   xmldata = xmldata.replace('\t','')
   xmldata = xmldata.replace(' ', '')
-  # xmldata = xmldata.encode('utf8')
-  print(xmldata.strip())
   print("SENT")
+  print(xmldata.strip())
   vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
   print("RECEIVE")
-  print(vpnresult)
-  print(vpnresult.status_code)
-  print(vpnresult.headers)
   print(str(vpnresult.content))
+
+  collection_name = dbname["purchase_output"]
+  collection_name.insert_one({
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        })
 
   return str( {
           "status_code":str(vpnresult.status_code),
@@ -115,31 +118,6 @@ def purchase_request():
           "headers":str(vpnresult.headers),
         }
       )
-  return str(vpnresult.content)
-  
-
-  return vpnresult #xmldata
-  (
-      response_status,
-      response,
-      response_headers,
-  ) = send_request_to_vpn(False, "", "url_string", str(xmldata), "POST")
-
-  if response_status != 200:
-      result_data = (
-          "Bank Gateway Proxy service connection failed.\nHTTP Error response: %s"
-          % response
-      )
-  else:
-      result_data = response["xmlresponse"]
-  
-  ## VPN RESULT Convert xml to json return
-  result = xmltodict.parse(result_data)
-  # **************************************************************  input json write to DB 
-  collection_name = dbname["purchase_result"]
-  collection_name.insert_one(result)
-
-  return json.dumps(result)
 
 # **************************************************************  REVERSAL **************************************************************
 @app.route('/Reversal')
@@ -194,8 +172,8 @@ def reversal_request():
     <Header>
         <MsgId>"""+datetime.today().strftime('%Y%m%d%H%M%S')+"""</MsgId>
         <TrxnType>Reversal</TrxnType>
-        <LoginId>Login</LoginId>
-        <Password>Pass</Password>
+        <LoginId>"""+loginUser+"""</LoginId>
+        <Password>"""+loginPass+"""</Password>
     </Header>
     <PosTxn>
         <MsgType>0400</MsgType>
@@ -218,33 +196,29 @@ def reversal_request():
   # **************************************************************  input json write to DB 
   collection_name = dbname["reversal_input"]
   collection_name.insert_one(xmltodict.parse(xmldata))
-  ##  XML DATA sent VPN 
-  # send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, request_method):
-  vpnresult = send_request_to_vpn("", "4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "https://uatvpn.golomtbank.com", xmldata, "POST")
-  print("https://10.10.10.1/")
-  print(vpnresult)
-  return vpnresult #xmldata
-  (
-      response_status,
-      response,
-      response_headers,
-  ) = send_request_to_vpn(False, "", "url_string", str(xmldata), "POST")
-
-  if response_status != 200:
-      result_data = (
-          "Bank Gateway Proxy service connection failed.\nHTTP Error response: %s"
-          % response
-      )
-  else:
-      result_data = response["xmlresponse"]
   
-  ## VPN RESULT Convert xml to json return
-  result = xmltodict.parse(result_data)
-  # **************************************************************  input json write to DB 
-  collection_name = dbname["reversal_result"]
-  collection_name.insert_one(result)
+  xmldata = xmldata.replace('\n','')
+  xmldata = xmldata.replace('\t','')
+  xmldata = xmldata.replace(' ', '')
+  print("SENT")
+  print(xmldata.strip())
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
+  print("RECEIVE")
+  print(str(vpnresult.content))
 
-  return json.dumps(result)
+  collection_name = dbname["reversal_output"]
+  collection_name.insert_one({
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        })
+
+  return str( {
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        }
+      )
 
 # **************************************************************  Void  REFUND **************************************************************
 @app.route('/Refund')
@@ -300,8 +274,8 @@ def refund_request():
     <Header>
         <MsgId>"""+datetime.today().strftime('%Y%m%d%H%M%S')+"""</MsgId>
         <TrxnType>Void</TrxnType>
-        <LoginId>Login</LoginId>
-        <Password>Pass</Password>
+        <LoginId>"""+loginUser+"""</LoginId>
+        <Password>"""+loginPass+"""</Password>
     </Header>
     <PosTxn>
         <MsgType>0200</MsgType>
@@ -328,29 +302,336 @@ def refund_request():
   collection_name = dbname["reversal_input"]
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
-  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/", xmldata, "POST")
-  return vpnresult #xmldata
-  (
-      response_status,
-      response,
-      response_headers,
-  ) = send_request_to_vpn(False, "", "url_string", str(xmldata), "POST")
+  xmldata = xmldata.replace('\n','')
+  xmldata = xmldata.replace('\t','')
+  xmldata = xmldata.replace(' ', '')
+  print("SENT")
+  print(xmldata.strip())
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
+  print("RECEIVE")
+  print(str(vpnresult.content))
 
-  if response_status != 200:
-      result_data = (
-          "Bank Gateway Proxy service connection failed.\nHTTP Error response: %s"
-          % response
+  collection_name = dbname["reversal_output"]
+  collection_name.insert_one({
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        })
+
+  return str( {
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        }
       )
-  else:
-      result_data = response["xmlresponse"]
-  
-  ## VPN RESULT Convert xml to json return
-  result = xmltodict.parse(result_data)
-  # **************************************************************  input json write to DB 
-  collection_name = dbname["reversal_result"]
-  collection_name.insert_one(result)
 
-  return json.dumps(result)
+# **************************************************************  SETTELMENT **************************************************************
+@app.route('/Settlement')
+def settlement():
+  return "Method Not Allowed", 405
+
+@app.route('/Settlement', methods=['POST'])
+def settlement_request():
+
+  if not request.get_json(): return "Not have requared fields!"
+  jsn = request.get_json()  # Request to JSON data 
+  
+  if not 'card_num' in jsn: return "Field card_num is requared!"
+  if not 'amount' in jsn: return "Field amount is requared!"
+  if not 'card_date' in jsn: return "Field card_date is requared!"
+  if not 'mode' in jsn: return "Field mode is requared!"
+  if not 'terminal_id' in jsn: return "Field terminal_id is requared!"
+  if not 'merchant_id' in jsn: return "Field merchant_id is requared!"
+
+  dbname = get_database()
+  collection_name = dbname["users"]
+  userCursor = collection_name.find({"User.terminal_id": jsn['terminal_id'], "User.merchant_id":jsn['merchant_id']})
+  
+  user = ""
+  for doc in userCursor:
+    user = doc['User']
+    print (doc)
+  if user == "": 
+    return "Terminal is not found!"
+
+  amount = str(int(jsn['amount']*100)).zfill(12)
+  trace_num = str(user['trace_num'] + 1).zfill(6)
+  batch_num = str(user['batch_num']).zfill(6)
+  acquiring = jsn['acquiring'] or "0003"
+  code = jsn['code'] or "00"
+
+  user['trace_num'] = user['trace_num'] + 1
+  user['updated_at'] = datetime.today().strftime('%Y/%m/%d %H:%M:%S')
+
+  collection_name.update(
+    {
+      "User.terminal_id":jsn['terminal_id'], 
+      "User.merchant_id":jsn['merchant_id']
+    },
+    {
+      "User": user
+    }
+  )
+
+
+  xmldata = """<Document>
+    <Header>
+        <MsgId>"""+datetime.today().strftime('%Y%m%d%H%M%S')+"""</MsgId>
+        <TrxnType>Settlement</TrxnType >
+        <LoginId>"""+loginUser+"""</LoginId>
+        <Password>"""+loginPass+"""</Password>
+    </Header>
+    <PosTxn>
+        <MsgType>0500</MsgType>
+        <F3>960000</F3>
+        <F11>"""+trace_num+"""</F11>
+        <F24>"""+acquiring+"""</F24>
+        <F25>"""+code+"""</F25>
+        <F41>"""+jsn['terminal_id']+"""</F41>
+        <F42>"""+jsn['merchant_id']+"""</F42>
+        <F60>000001</F60>
+        <F63>0001000000001000000000000000000</F63>
+    </PosTxn>
+</Document>"""
+ 
+  
+  #xmldata = json2xml(data)  # JSON to XML data
+  # **************************************************************  input json write to DB 
+  collection_name = dbname["settlement_input"]
+  collection_name.insert_one(xmltodict.parse(xmldata))
+  
+  xmldata = xmldata.replace('\n','')
+  xmldata = xmldata.replace('\t','')
+  xmldata = xmldata.replace(' ', '')
+  print("SENT")
+  print(xmldata.strip())
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
+  print("RECEIVE")
+  print(str(vpnresult.content))
+
+  collection_name = dbname["settlement_output"]
+  collection_name.insert_one({
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        })
+
+  return str( {
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        }
+      )
+
+# **************************************************************  BATCH UPLOAD **************************************************************
+@app.route('/Batch')
+def batch():
+  return "Method Not Allowed", 405
+
+@app.route('/Batch', methods=['POST'])
+def batch_request():
+
+  if not request.get_json(): return "Not have requared fields!"
+  jsn = request.get_json()  # Request to JSON data 
+
+  if not 'amount' in jsn: return "Field amount is requared!"
+  if not 'mode' in jsn: return "Field mode is requared!"
+  if not 'track' in jsn: return "Field track is requared!"
+  if not 'terminal_id' in jsn: return "Field terminal_id is requared!"
+  if not 'merchant_id' in jsn: return "Field merchant_id is requared!"
+
+  
+  dbname = get_database()
+  collection_name = dbname["users"]
+  userCursor = collection_name.find({"User.terminal_id": jsn['terminal_id'], "User.merchant_id":jsn['merchant_id']})
+  
+  user = ""
+  for doc in userCursor:
+    user = doc['User']
+    print (doc)
+  if user == "": 
+    return "Terminal is not found!"
+
+  amount = str(int(jsn['amount']*100)).zfill(12)
+  trace_num = str(user['trace_num'] + 1).zfill(6)
+  batch_num = str(user['batch_num']).zfill(6)
+  merchant_name = str(user['merchant_name'])
+  sequence = jsn['sequence'] or "0001"
+  acquiring = jsn['acquiring'] or "0003"
+  code = jsn['code'] or "00"
+
+  user['trace_num'] = user['trace_num'] + 1
+  user['updated_at'] = datetime.today().strftime('%Y/%m/%d %H:%M:%S')
+
+  collection_name.update(
+    {
+      "User.terminal_id":jsn['terminal_id'], 
+      "User.merchant_id":jsn['merchant_id']
+    },
+    {
+      "User": user
+    }
+  )
+
+  xmldata = """<Document>
+    <Header>
+        <MsgId>"""+datetime.today().strftime('%Y%m%d%H%M%S')+"""</MsgId>
+        <TrxnType>Batch</TrxnType >
+        <LoginId>"""+loginUser+"""</LoginId>
+        <Password>"""+loginPass+"""</Password>
+    </Header>
+    <PosTxn>
+        <MsgType>0320</MsgType>
+        <F2>9496255596404287</F2>
+        <F3>010001</F3>
+        <F4>"""+amount+"""</F4>
+        <F11>"""+trace_num+"""</F11>
+        <F12>181442</F12>
+        <F13>0630</F13>
+        <F14>1901</F14>
+        <F22>"""+jsn['mode']+"""</F22>
+        <F24>"""+acquiring+"""</F24>
+        <F25>"""+code+"""</F25>
+        <F37>063041979951</F37>
+        <F38>591964</F38>
+        <F39>00</F39>
+        <F41>"""+jsn['terminal_id']+"""</F41>
+        <F42>"""+jsn['merchant_id']+"""</F42>
+        <F60>0200000002</F60>
+        <F62>"""+batch_num+"""</F62>
+    </PosTxn>
+</Document>"""
+  
+  
+  #xmldata = json2xml(data)  # JSON to XML data
+  # **************************************************************  input json write to DB ***************************************
+  collection_name = dbname["batch_input"]
+  collection_name.insert_one(xmltodict.parse(xmldata))
+  ##  XML DATA sent VPN 
+  xmldata = xmldata.replace('\n','')
+  xmldata = xmldata.replace('\t','')
+  xmldata = xmldata.replace(' ', '')
+  print("SENT")
+  print(xmldata.strip())
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
+  print("RECEIVE")
+  print(str(vpnresult.content))
+
+  collection_name = dbname["batch_output"]
+  collection_name.insert_one({
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        })
+
+  return str( {
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        }
+      )
+
+# **************************************************************  KEY DOWNLOAD **************************************************************
+@app.route('/Key')
+def key():
+  return "Method Not Allowed", 405
+
+@app.route('/Key', methods=['POST'])
+def key_request():
+
+  if not request.get_json(): return "Not have requared fields!"
+  jsn = request.get_json()  # Request to JSON data 
+
+  if not 'amount' in jsn: return "Field amount is requared!"
+  if not 'mode' in jsn: return "Field mode is requared!"
+  if not 'track' in jsn: return "Field track is requared!"
+  if not 'terminal_id' in jsn: return "Field terminal_id is requared!"
+  if not 'merchant_id' in jsn: return "Field merchant_id is requared!"
+
+  
+  dbname = get_database()
+  collection_name = dbname["users"]
+  userCursor = collection_name.find({"User.terminal_id": jsn['terminal_id'], "User.merchant_id":jsn['merchant_id']})
+  
+  user = ""
+  for doc in userCursor:
+    user = doc['User']
+    print (doc)
+  if user == "": 
+    return "Terminal is not found!"
+
+  amount = str(int(jsn['amount']*100)).zfill(12)
+  trace_num = str(user['trace_num'] + 1).zfill(6)
+  batch_num = str(user['batch_num']).zfill(6)
+  merchant_name = str(user['merchant_name'])
+  sequence = jsn['sequence'] or "0001"
+  acquiring = jsn['acquiring'] or "0003"
+  code = jsn['code'] or "00"
+
+  user['trace_num'] = user['trace_num'] + 1
+  user['updated_at'] = datetime.today().strftime('%Y/%m/%d %H:%M:%S')
+
+  collection_name.update(
+    {
+      "User.terminal_id":jsn['terminal_id'], 
+      "User.merchant_id":jsn['merchant_id']
+    },
+    {
+      "User": user
+    }
+  )
+
+  xmldata = """<Document>
+    <Header>
+        <MsgId>"""+datetime.today().strftime('%Y%m%d%H%M%S')+"""</MsgId>
+        <TrxnType>Key</TrxnType>
+        <LoginId>"""+loginUser+"""</LoginId>
+        <Password>"""+loginPass+"""</Password>
+    </Header>
+    <PosTxn>
+        <MsgType>0800</MsgType>
+        <F3>900000</F3>
+        <F11>"""+trace_num+"""</F11>
+        <F24>"""+acquiring+"""</F24>
+        <F25>"""+code+"""</F25>
+        <F41>"""+jsn['terminal_id']+"""</F41>
+        <F42>"""+jsn['merchant_id']+"""</F42>
+    </PosTxn>
+  </Document>"""
+  
+  
+  #xmldata = json2xml(data)  # JSON to XML data
+  # **************************************************************  input json write to DB ***************************************
+  collection_name = dbname["key_input"]
+  collection_name.insert_one(xmltodict.parse(xmldata))
+  ##  XML DATA sent VPN 
+  xmldata = xmldata.replace('\n','')
+  xmldata = xmldata.replace('\t','')
+  xmldata = xmldata.replace(' ', '')
+  print("SENT")
+  print(xmldata.strip())
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
+  print("RECEIVE")
+  print(str(vpnresult.content))
+
+  collection_name = dbname["key_output"]
+  collection_name.insert_one({
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        })
+
+  return str( {
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        }
+      )
+
+
+
+
+
 
 # **************************************************************  DETAILS **************************************************************
 # **************************************************************  DB CONNECTION
