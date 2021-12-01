@@ -99,6 +99,7 @@ def purchase_request():
   xmldata = xmldata.replace('\n','')
   xmldata = xmldata.replace('\t','')
   xmldata = xmldata.replace(' ', '')
+  xmldata = xmldata.encode('utf8')
   print(xmldata.strip())
   print("SENT")
   vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
@@ -389,8 +390,8 @@ def send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, r
   #     "Connection": "keep-alive",
   # }
   headers = {
-    "Content-Type": "application/xml",
-    "Accept": "application/xml",
+    "Content-Type": "application/xml;charset=UTF-8",
+    "Accept": "application/xml;charset=UTF-8",
     "Connection": "keep-alive",
   }
   if proxy_auth_token:
