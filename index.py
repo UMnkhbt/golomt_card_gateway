@@ -106,7 +106,7 @@ def purchase_request():
   collection_name = dbname["purchase_input"]
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
-  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/rpc/login", xmldata, "POST")
+  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/cardpro/service", xmldata, "POST")
   print("SENT")
   print(vpnresult)
   return tuple([
