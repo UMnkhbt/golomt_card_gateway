@@ -96,13 +96,24 @@ def purchase_request():
   collection_name = dbname["purchase_input"]
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
-  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip('\n').strip('\t'), "POST")
+  print(xmldata)
+  print(xmldata.strip('\n'))
+  line = xmldata.replace('\n','')
+  print(line)
   print("SENT")
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip('\n'), "POST")
+  print("RECEIVE")
   print(vpnresult)
   print(vpnresult.status_code)
   print(vpnresult.headers)
   print(str(vpnresult.content))
-  print(xmltodict.parse(str(vpnresult.content)))
+
+  return str( {
+          "status_code":str(vpnresult.status_code),
+          "content":str(vpnresult.content),
+          "headers":str(vpnresult.headers),
+        }
+      )
   return str(vpnresult.content)
   
 
