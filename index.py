@@ -11,6 +11,11 @@ import requests, time, re, json, xmltodict
 
 app = Flask(__name__)
 
+loginUser = "Login"
+loginPass = "Pass"
+loginToken = "4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo="
+mainURL = "https://uatvpn.golomtbank.com/cardpro/service"
+
 # **************************************************************  PURCHASE **************************************************************
 @app.route('/Purchase')
 def purchase():
@@ -21,28 +26,13 @@ def purchase_request():
 
   if not request.get_json(): return "Not have requared fields!"
   jsn = request.get_json()  # Request to JSON data 
-  
-  # if not 'Document' in jsn: return "Field Document is requared!"
-  # if not 'Header' in jsn['Document']: return "Field Header is requared!"
-  # if not 'MsgId' in jsn['Document']['Header']: return "Field MsgId is requared!"
-  # if not 'TrxnType' in jsn['Document']['Header']: return "Field TrxnType is requared!"
-  # if not 'LoginId' in jsn['Document']['Header']: return "Field LoginId is requared!"
-  # if not 'Password' in jsn['Document']['Header']: return "Field Password is requared!"
-  # if not 'PosTxn' in jsn['Document']: return "Field PosTxn is requared!"
-  # if not 'MsgType' in jsn['Document']['PosTxn']: return "Field MsgType is requared!"
-  # if not 'input1' in jsn: return "Field F3 is requared!"
+
   if not 'amount' in jsn: return "Field amount is requared!"
-  #if not 'trace_num' in jsn: return "Field trace_num is requared!"
   if not 'mode' in jsn: return "Field mode is requared!"
-  # NOT REQUARED
-  #if not 'sequence' in jsn: return "Field sequence is requared!"
-  #if not 'acquiring' in jsn: return "Field acquiring is requared!"
-  #if not 'code' in jsn: return "Field code is requared!"
   if not 'track' in jsn: return "Field track is requared!"
   if not 'terminal_id' in jsn: return "Field terminal_id is requared!"
   if not 'merchant_id' in jsn: return "Field merchant_id is requared!"
-  #if not 'merchant_name' in jsn: return "Field merchant_name is requared!"
-  #if not 'batch_num' in jsn: return "Field batch_num is requared!"
+
   
   dbname = get_database()
   collection_name = dbname["users"]
@@ -80,8 +70,8 @@ def purchase_request():
     <Header>
         <MsgId>"""+datetime.today().strftime('%Y%m%d%H%M%S')+"""</MsgId>
         <TrxnType>Purchase</TrxnType>
-        <LoginId>Login</LoginId>
-        <Password>Pass</Password>
+        <LoginId>"""+loginUser+"""</LoginId>
+        <Password>"""+loginPass+"""</Password>
     </Header>
     <PosTxn>
         <MsgType>0200</MsgType>
@@ -102,17 +92,16 @@ def purchase_request():
   
   
   #xmldata = json2xml(data)  # JSON to XML data
-  # **************************************************************  input json write to DB 
+  # **************************************************************  input json write to DB ***************************************
   collection_name = dbname["purchase_input"]
   collection_name.insert_one(xmltodict.parse(xmldata))
   ##  XML DATA sent VPN 
-  vpnresult = send_request_to_vpn("4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo=", "", "https://uatvpn.golomtbank.com/cardpro/service", xmldata, "POST")
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip('\n').strip('\t'), "POST")
   print("SENT")
   print(vpnresult)
-  return tuple([
-        {"start": ent.start_char, "end": ent.end_char, "label": ent.label_}
-        for ent in vpnresult
-    ])
+  print(vpnresult.status_code)
+  print(vpnresult.headers)
+  return vpnresult
 
   return vpnresult #xmldata
   (
@@ -436,6 +425,7 @@ def send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, r
           res = requests.post(url_string, json=params, headers=headers)
       else:
           res = requests.get(url_string, headers=headers)
+      return res
       return (
           res.status_code,
           res.json() if res.status_code == 200 else res.content,
