@@ -99,7 +99,7 @@ def purchase_request():
   xmldata = xmldata.replace('\n','')
   xmldata = xmldata.replace('\t','')
   xmldata = xmldata.replace(' ', '')
-  xmldata = xmldata.encode('utf8')
+  # xmldata = xmldata.encode('utf8')
   print(xmldata.strip())
   print("SENT")
   vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
@@ -441,7 +441,7 @@ def send_request_to_vpn(proxy_auth_token, proxy_cert_data, url_string, params, r
       )
   else:
       if request_method == "POST":
-          res = requests.post(url_string, json=params, headers=headers)
+          res = requests.post(url_string, data=params, headers=headers)
       else:
           res = requests.get(url_string, headers=headers)
       return res
