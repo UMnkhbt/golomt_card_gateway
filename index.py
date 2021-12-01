@@ -101,7 +101,10 @@ def purchase_request():
   print(vpnresult)
   print(vpnresult.status_code)
   print(vpnresult.headers)
-  return vpnresult
+  print(str(vpnresult.content))
+  print(xmltodict.parse(str(vpnresult.content)))
+  return str(vpnresult.content)
+  
 
   return vpnresult #xmldata
   (
