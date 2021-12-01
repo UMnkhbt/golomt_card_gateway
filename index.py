@@ -98,9 +98,10 @@ def purchase_request():
   ##  XML DATA sent VPN 
   xmldata = xmldata.replace('\n','')
   xmldata = xmldata.replace('\t','')
-  print(xmldata)
+  xmldata = xmldata.replace(' ', '')
+  print(xmldata.strip())
   print("SENT")
-  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata, "POST")
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
   print("RECEIVE")
   print(vpnresult)
   print(vpnresult.status_code)
