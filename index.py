@@ -101,7 +101,7 @@ def purchase_request():
   xmldata = xmldata.replace(' ', '')
   print(xmldata.strip())
   print("SENT")
-  vpnresult = send_request_to_vpn(loginToken, "", mainURL , xmldata.strip(), "POST")
+  vpnresult = send_request_to_vpn(loginToken, "", mainURL , "<Document><Header><Password>Pass</Password><TrxnType>Purchase</TrxnType><LoginId>Login</LoginId><MsgId>20200831145233</MsgId></Header><PosTxn><F42>000000000043752</F42><MsgType>0200</MsgType><F11>000002</F11><F22>0021</F22><F25>00</F25><F24>0003</F24><F35>9496100477947550d22095011632333200000</F35><F41>19190000</F41><F4>000000007000</F4><F3>000000</F3><F62>000009</F62></PosTxn></Document>", "POST")
   print("RECEIVE")
   print(vpnresult)
   print(vpnresult.status_code)
