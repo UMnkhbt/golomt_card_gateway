@@ -90,6 +90,12 @@ def purchase_request():
     </PosTxn>
   </Document>"""
 
+  #xmldata = json2xml(data)  # JSON to XML data
+  # **************************************************************  input json write to DB ***************************************
+  collection_name = dbname["purchase_input"]
+  collection_name.insert_one(xmltodict.parse(xmldata))
+  ##  XML DATA sent VPN 
+
   xmldata = """<Document>
     <Header>
         <MsgId>20200417181115</MsgId>
@@ -112,14 +118,8 @@ def purchase_request():
         <F43>TERMINAL LOCATION MERCHANT NAME </F43>
         <F62>000001</F62>
     </PosTxn>
-</Document>"""
-  
-  
-  #xmldata = json2xml(data)  # JSON to XML data
-  # **************************************************************  input json write to DB ***************************************
-  collection_name = dbname["purchase_input"]
-  collection_name.insert_one(xmltodict.parse(xmldata))
-  ##  XML DATA sent VPN 
+  </Document>"""
+
   xmldata = xmldata.replace('\n','')
   xmldata = xmldata.replace('\t','')
   xmldata = xmldata.replace(' ', '')
