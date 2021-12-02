@@ -89,6 +89,30 @@ def purchase_request():
         <F62>"""+batch_num+"""</F62>
     </PosTxn>
   </Document>"""
+
+  xmldata = """<Document>
+    <Header>
+        <MsgId>20200417181115</MsgId>
+        <TrxnType>Purchase</TrxnType>
+        <LoginId>Login</LoginIds>
+        <Password>Pass</Password>
+    </Header>
+    <PosTxn>
+        <MsgType>0200</MsgType>
+        <F3>000000</F3>
+        <F4>000000001000</F4>
+        <F11>000006</F11>
+        <F22>0021</F22>
+        <F23>0001</F23>
+        <F24>0003</F24>
+        <F25>00</F25>
+        <F35>9496253287992447d22055217198063069980</F35>
+        <F41>13133707</F41>
+        <F42>000000000043752</F42>
+        <F43>TERMINAL LOCATION MERCHANT NAME </F43>
+        <F62>000001</F62>
+    </PosTxn>
+</Document>"""
   
   
   #xmldata = json2xml(data)  # JSON to XML data
