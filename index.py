@@ -100,7 +100,7 @@ def purchase_request():
     <Header>
         <MsgId>20200417181115</MsgId>
         <TrxnType>Purchase</TrxnType>
-        <LoginId>Login</LoginIds>
+        <LoginId>Login</LoginId>
         <Password>Pass</Password>
     </Header>
     <PosTxn>
@@ -118,7 +118,7 @@ def purchase_request():
         <F43>TERMINAL LOCATION MERCHANT NAME </F43>
         <F62>000001</F62>
     </PosTxn>
-  </Document>"""
+</Document>"""
 
   xmldata = xmldata.replace('\n','')
   xmldata = xmldata.replace('\t','')
