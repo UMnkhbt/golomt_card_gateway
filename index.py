@@ -11,7 +11,7 @@ import requests, time, re, json, xmltodict
 
 app = Flask(__name__)
 
-loginUser = "login"
+loginUser = "Login"
 loginPass = "password"
 loginToken = "4DxHC7Ulh1734lbXyX6cMy4hibJMDYLbkOeo65ez+zs=$xih6efbMqNZ5Dy5PqC4N5FFfVizXCjLPvYkqwNPnCIo="
 mainURL = "https://uatvpn.golomtbank.com/cardpro/service"
